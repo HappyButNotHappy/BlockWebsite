@@ -1,0 +1,406 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>Product</title>
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.2/font/bootstrap-icons.css">
+	<link href="../Style/style.css" rel="stylesheet">
+	<link rel="stylesheet" href="../Style/product.css">
+</head>
+<body>
+
+<nav class="navbar navbar-expand-lg bg-body-tertiary custom-navbar fixed-top">
+  <div class="container-fluid">
+    <a class="navbar-brand me-auto" href="index.html">
+      <img src="https://i.imgur.com/UhGtmYg.png" alt="Shop logo" class="navbar-logo">
+    </a>
+
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
+      <ul class="navbar-nav">
+        <li class="nav-item">
+          <a class="nav-link" href="index.html">Home</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="about.html">About</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="contact.html">Contact</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="men.html">Men</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="women.html">Women</a>
+        </li>
+				<li class="nav-item">
+					<a class="nav-link" href="cart.html">Cart</a>
+				</li>
+			</ul>
+		</div>
+	</div>
+</nav>
+<!-- Navbar: top site navigation links -->
+<button id="theme-toggle" class="btn btn-outline-primary btn-sm me-2 theme-toggle" type="button" aria-label="Toggle dark mode">Dark</button>
+
+<!-- Main content: product image and details section -->
+<div class="container mt-5">
+		<div class="row">
+				<!-- Product Images -->
+				<div class="col-md-6 mb-4">
+						<img id="mainImage" src="" alt="Product" class="img-fluid rounded mb-3 product-image">
+						<div id="thumbs" class="d-flex gap-2"></div>
+				</div>
+
+				<!-- Product Details -->
+				<div class="col-md-6">
+						<h2 id="productTitle" class="mb-3">Product Title</h2>
+						<p id="productSKU" class="text-muted mb-4">SKU: --</p>
+						<div class="mb-3">
+								<span id="productPrice" class="h4 me-2">$0.00</span>
+								<span id="productOldPrice" class="text-muted"><s></s></span>
+						</div>
+						<div class="mb-3">
+								<span id="productRating"></span>
+						</div>
+						<p id="productDescription" class="mb-4">Product description</p>
+						<div class="mb-4">
+								<h5>Key Features:</h5>
+								<ul id="productFeatures"></ul>
+						</div>
+						<div class="mb-4">
+								<label for="quantity" class="form-label">Quantity:</label>
+								<input type="number" class="form-control" id="quantity" value="1" min="1" max="5" style="width: 80px;">
+						</div>
+						<button id="addToCart" class="btn btn-primary btn-lg mb-3 me-2">
+								<i class="bi bi-cart-plus"></i> Add to Cart
+						</button>
+				</div>
+		</div>
+</div>
+
+<!-- scripts -->
+<script src="../javascript/common.js"></script>
+<script>
+	// Product ID AND Their Details
+	const products = {
+		'mens-shirt': {
+			title: "Men's Shirt",
+			sku: 'M-SHIRT-001',
+			price: '$34.99',
+			oldPrice: '',
+			rating: '⭐⭐⭐⭐ (24)',
+			description: 'Classic cotton shirt for everyday wear.',
+			images: ['https://i.imgur.com/HawXuSx.png'],
+			features: ['100% cotton','Machine washable','Regular fit']
+		},
+		'casual-jacket': {
+			title: 'Casual Jacket',
+			sku: 'M-JCK-002',
+			price: '$69.99',
+			oldPrice: '',
+			rating: '⭐⭐⭐⭐⭐ (18)',
+			description: 'Warm and stylish jacket for everyday wear.',
+			images: ['https://i.imgur.com/1wZj3ik.png'],
+			features: ['Lightweight insulation','Water resistant','Modern fit']
+		},
+		'slim-jeans': {
+			title: 'Slim Jeans',
+			sku: 'M-JNS-003',
+			price: '$49.99',
+			oldPrice: '',
+			rating: '⭐⭐⭐⭐ (15)',
+			description: 'Comfortable slim jeans with stretch.',
+			images: ['https://i.imgur.com/gbAAJqv.png'],
+			features: ['Stretch denim','Slim fit','Durable seams']
+		},
+		'leather-boots': {
+			title: 'Leather Boots',
+			sku: 'M-BOO-004',
+			price: '$89.99',
+			oldPrice: '',
+			rating: '⭐⭐⭐⭐⭐ (30)',
+			description: 'Classic leather boots for year-round style.',
+			images: ['https://i.imgur.com/TuDCDxT.png'],
+			features: ['Genuine leather','Padded collar','Slip-resistant sole']
+		},
+		'graphic-tee': {
+			title: 'Graphic Tee',
+			sku: 'M-TEE-005',
+			price: '$29.99',
+			oldPrice: '',
+			rating: '⭐⭐⭐⭐ (22)',
+			description: 'Cool graphic tee with soft cotton fabric.',
+			images: ['https://i.imgur.com/gbAAJqv.png'],
+			features: ['Soft cotton','Breathable','Everyday wear']
+		},
+		'denim-jeans': {
+			title: 'Denim Jeans',
+			sku: 'M-JNS-006',
+			price: '$59.99',
+			oldPrice: '',
+			rating: '⭐⭐⭐⭐ (16)',
+			description: 'Versatile denim jeans for casual style.',
+			images: ['https://i.imgur.com/PcfBrt3.png'],
+			features: ['Durable denim','Classic cut','Comfort fit']
+		},
+		'fall-sweater': {
+			title: 'Fall Sweater',
+			sku: 'M-SWT-007',
+			price: '$39.99',
+			oldPrice: '',
+			rating: '⭐⭐⭐⭐ (14)',
+			description: 'Cozy sweater for cool weather.',
+			images: ['https://i.imgur.com/IkRoVf3.png'],
+			features: ['Soft knit','Warm','Relaxed fit']
+		},
+		'sport-sneakers': {
+			title: 'Sport Sneakers',
+			sku: 'M-SNK-008',
+			price: '$74.99',
+			oldPrice: '',
+			rating: '⭐⭐⭐⭐⭐ (19)',
+			description: 'Lightweight sneakers for sport and street.',
+			images: ['https://i.imgur.com/i1NFefq.png'],
+			features: ['Breathable mesh','Flexible sole','Modern style']
+		},
+		'denim-jacket': {
+			title: 'Denim Jacket',
+			sku: 'F-DBJ-009',
+			price: '$49.99',
+			oldPrice: '',
+			rating: '⭐⭐⭐⭐ (20)',
+			description: 'Soft denim jacket for an easy look.',
+			images: ['https://i.imgur.com/OkyTjK2.jpeg'],
+			features: ['Light denim','Classic style','Comfort fit']
+		},
+		'white-tee': {
+			title: 'White Tee',
+			sku: 'F-WTE-010',
+			price: '$59.99',
+			oldPrice: '',
+			rating: '⭐⭐⭐⭐⭐ (25)',
+			description: 'Crisp white tee for everyday wear.',
+			images: ['https://i.imgur.com/4Va1AOZ.jpeg'],
+			features: ['Soft cotton','Breathable','Minimal design']
+		},
+		'sport-shorts': {
+			title: 'Sport Shorts',
+			sku: 'F-SHT-011',
+			price: '$29.99',
+			oldPrice: '',
+			rating: '⭐⭐⭐⭐ (18)',
+			description: 'Lightweight shorts for active days.',
+			images: ['https://i.imgur.com/PqwwrxO.png'],
+			features: ['Quick dry','Loose fit','Comfort waist']
+		},
+		'casual-hoodie': {
+			title: 'Casual Hoodie',
+			sku: 'F-HDY-012',
+			price: '$44.99',
+			oldPrice: '',
+			rating: '⭐⭐⭐⭐ (22)',
+			description: 'Cozy hoodie with relaxed shape.',
+			images: ['https://i.imgur.com/lXszd57.png'],
+			features: ['Soft fleece','Relaxed fit','Front pocket']
+		},
+		'summer-dress': {
+			title: 'Summer Dress',
+			sku: 'F-DRS-013',
+			price: '$49.99',
+			oldPrice: '',
+			rating: '⭐⭐⭐⭐ (19)',
+			description: 'Light dress perfect for summer days.',
+			images: ['https://i.imgur.com/qzAnXyQ.png'],
+			features: ['Flowy fit','Breathable','Bright print']
+		},
+		'leather-bag': {
+			title: 'Leather Bag',
+			sku: 'F-BAG-014',
+			price: '$79.99',
+			oldPrice: '',
+			rating: '⭐⭐⭐⭐⭐ (27)',
+			description: 'Stylish leather bag for everyday use.',
+			images: ['https://i.imgur.com/WcTjxj7.png'],
+			features: ['Real leather','Adjustable strap','Roomy interior']
+		},
+		'womens-blouse': {
+			title: 'Women Blouse',
+			sku: 'W-BLS-101',
+			price: '$44.99',
+			oldPrice: '',
+			rating: '⭐⭐⭐⭐ (21)',
+			description: 'Elegant blouse with a soft flowy fit.',
+			images: ['https://i.imgur.com/8jX3iEG.png'],
+			features: ['Light fabric','Delicate detail','Everyday style']
+		},
+		'floral-dress': {
+			title: 'Floral Dress',
+			sku: 'W-DRS-102',
+			price: '$54.99',
+			oldPrice: '',
+			rating: '⭐⭐⭐⭐⭐ (18)',
+			description: 'Bright floral dress for warm-weather looks.',
+			images: ['https://i.imgur.com/joiIkRt.png'],
+			features: ['Soft material','Flattering shape','Summer ready']
+		},
+		'skinny-jeans': {
+			title: 'Skinny Jeans',
+			sku: 'W-JNS-103',
+			price: '$59.99',
+			oldPrice: '',
+			rating: '⭐⭐⭐⭐ (16)',
+			description: 'Sleek skinny jeans with stretch.',
+			images: ['https://i.imgur.com/BOf3ohM.png'],
+			features: ['Stretch denim','Slim fit','Easy care']
+		},
+		'casual-blazer': {
+			title: 'Casual Blazer',
+			sku: 'W-BZR-104',
+			price: '$79.99',
+			oldPrice: '',
+			rating: '⭐⭐⭐⭐⭐ (20)',
+			description: 'Relaxed blazer for smart casual outfits.',
+			images: ['https://i.imgur.com/A3Gw4qV.png'],
+			features: ['Structured shape','Comfort fit','Polished look']
+		},
+		'basic-tank': {
+			title: 'Basic Tank',
+			sku: 'W-TNK-105',
+			price: '$24.99',
+			oldPrice: '',
+			rating: '⭐⭐⭐⭐ (12)',
+			description: 'Simple tank top that layers easily.',
+			images: ['https://i.imgur.com/GGgqMuQ.png'],
+			features: ['Lightweight','Soft knit','Easy wear']
+		},
+		'leather-jacket-w': {
+			title: 'Leather Jacket',
+			sku: 'W-JCK-006',
+			price: '$99.99',
+			oldPrice: '',
+			rating: '⭐⭐⭐⭐⭐ (7)',
+			description: 'Stylish leather jacket for edgy outfits.',
+			images: ['https://i.imgur.com/JcfmkwW.png'],
+			features: ['Genuine leather','Classic cut','Durable hardware']
+		},
+		'high-heels': {
+			title: 'High Heels',
+			sku: 'W-HEEL-007',
+			price: '$89.99',
+			oldPrice: '',
+			rating: '⭐⭐⭐⭐ (13)',
+			description: 'Elegant heels for dressy occasions.',
+			images: ['https://i.imgur.com/SYtvqYK.png'],
+			features: ['Stiletto heel','Padded insole','Suede finish']
+		},
+		'elegant-scarf': {
+			title: 'Elegant Scarf',
+			sku: 'W-SCARF-008',
+			price: '$34.99',
+			oldPrice: '',
+			rating: '⭐⭐⭐⭐ (6)',
+			description: 'Lightweight scarf to elevate outfits.',
+			images: ['https://i.imgur.com/kPxarAs.png'],
+			features: ['Silky feel','Fringe edges','One size']
+		},
+		'sneakers': {
+			title: 'Sneakers',
+			sku: 'F-SNK-015',
+			price: '$69.99',
+			oldPrice: '',
+			rating: '⭐⭐⭐⭐⭐ (21)',
+			description: 'Comfortable sneakers for every day.',
+			images: ['https://i.imgur.com/TuDCDxT.png'],
+			features: ['Cushioned sole','Breathable upper','Stylish design']
+		},
+		'beanie-hat': {
+			title: 'Beanie Hat',
+			sku: 'F-HAT-016',
+			price: '$19.99',
+			oldPrice: '',
+			rating: '⭐⭐⭐⭐ (14)',
+			description: 'Warm beanie hat for cool days.',
+			images: ['https://i.imgur.com/NNYtbr6.png'],
+			features: ['Soft knit','Stretch fit','Warm lining']
+		},
+		'womens-top': {
+			title: 'Women Top',
+			sku: 'W-TOP-002',
+			price: '$29.99',
+			oldPrice: '',
+			rating: '⭐⭐⭐⭐ (12)',
+			description: 'Comfortable top with modern fit.',
+			images: ['https://images.unsplash.com/photo-1520975910035-6a1c0cc6f0a4?auto=format&fit=crop&w=1080&q=80'],
+			features: ['Soft fabric','Slim fit','Easy care']
+		}
+	};
+
+	function getParam(key){ return new URLSearchParams(window.location.search).get(key); }
+
+	function changeImage(e, src){
+		document.getElementById('mainImage').src = src;
+		document.querySelectorAll('.thumbnail').forEach(t => t.classList.remove('active'));
+		if (e && e.target) e.target.classList.add('active');
+	}
+
+	function clampQuantity(input){
+		let v = parseInt(input.value,10) || 1;
+		v = Math.min(5, Math.max(1, v));
+		input.value = v; return v;
+	}
+
+	function addToCart(productId, quantity){
+		const prod = products[productId]; if(!prod) return;
+		const cart = getCart();
+		const existing = cart.find(i=>i.id===productId);
+		if(existing) existing.quantity = Math.min(5, existing.quantity + quantity);
+		else cart.push({ id: productId, title: prod.title, sku: prod.sku, price: parsePrice(prod.price), image: prod.images[0]||'', quantity });
+		saveCart(cart); updateCartCount(); alert('Added to cart: '+prod.title+' (Qty: '+quantity+')');
+	}
+
+	function renderProduct(id){
+		const p = products[id]; if(!p) return;
+		document.getElementById('productTitle').textContent = p.title;
+		document.getElementById('productSKU').textContent = 'SKU: '+p.sku;
+		document.getElementById('productPrice').textContent = p.price;
+		document.getElementById('productOldPrice').querySelector('s').textContent = p.oldPrice || '';
+		document.getElementById('productDescription').textContent = p.description;
+		document.getElementById('productRating').textContent = p.rating;
+		const feats = document.getElementById('productFeatures'); feats.innerHTML = '';
+		(p.features||[]).forEach(f=>{ const li=document.createElement('li'); li.textContent=f; feats.appendChild(li); });
+		const main = document.getElementById('mainImage'); const thumbs = document.getElementById('thumbs'); thumbs.innerHTML='';
+		if(p.images && p.images.length){ main.src = p.images[0]; p.images.forEach((s,i)=>{ const img=document.createElement('img'); img.src=s; img.className='thumbnail rounded'+(i===0?' active':''); img.alt='thumb'+(i+1); img.onclick=(e)=>changeImage(e,s); thumbs.appendChild(img); }); }
+	}
+
+	document.addEventListener('DOMContentLoaded', ()=>{
+		const id = getParam('id') || Object.keys(products)[0];
+		renderProduct(id);
+		const qty = document.getElementById('quantity'); qty.addEventListener('input', ()=>clampQuantity(qty));
+		document.getElementById('addToCart').addEventListener('click', ()=>addToCart(id, clampQuantity(qty)));
+	});
+</script>
+<!-- Footer: site links and copyright -->
+<footer class="site-footer d-flex flex-wrap justify-content-between align-items-center py-3 my-4 border-top">
+	<p class="col-md-4 mb-0 text-body-secondary">© 2026 Block Lab</p>
+    <a href="index.html" class="col-md-4 d-flex align-items-center justify-content-center mb-3 mb-md-0 me-md-auto link-body-emphasis text-decoration-none" aria-label="Block Lab">
+		<img src="https://i.imgur.com/UhGtmYg.png" alt="Block Lab logo" width="150" height="75" class="me-2">
+	</a>
+	<ul class="nav col-md-4 justify-content-end">
+		<li class="nav-item"><a href="index.html" class="nav-link px-2">Home</a></li>
+		<li class="nav-item"><a href="about.html" class="nav-link px-2">About</a></li>
+		<li class="nav-item"><a href="contact.html" class="nav-link px-2">Contact</a></li>
+		<li class="nav-item"><a href="men.html" class="nav-link px-2">Men</a></li>
+		<li class="nav-item"><a href="women.html" class="nav-link px-2">Women</a></li>
+	</ul>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
+
